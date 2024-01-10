@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Stock Market Simulation</title>
+    <script>
+        function updateStocks() {
+            let stocks = [
+                { name: "Company A", price: 100 },
+                { name: "Company B", price: 150 },
+                { name: "Company C", price: 80 }
+                // Add more stocks as needed
+            ];
+
+            let previousStock = null;
+            let stockDisplay = document.getElementById("stockDisplay");
+
+            setInterval(() => {
+                if (previousStock === null) {
+                    previousStock = stocks.map(stock => ({ ...stock }));
+                } else {
+                    previousStock = stocks.map(stock => ({ ...stock }));
+                }
+
+                stocks.forEach(stock => {
+                    const change = Math.random() * 5 - 3;
+                    stock.price += change;
+                    stock.price = Math.max(stock.price, 0);
+                });
+
+                stockDisplay.innerHTML = ""; // Clear previous prices
+
+                let prevElement = document.createElement("p");
+                prevElement.innerHTML = "<strong>Previous Prices:</strong><br>";
+                previousStock.forEach(stock => {
+                    prevElement.innerHTML += `${stock.name}: $${stock.price.toFixed(2)}<br>`;
+                });
+                stockDisplay.appendChild(prevElement);
+
+                let currentElement = document.createElement("p");
+                currentElement.innerHTML = "<strong>Current Prices:</strong><br>";
+                stocks.forEach(stock => {
+                    currentElement.innerHTML += `${stock.name}: $${stock.price.toFixed(2)}<br>`;
+                    if (previousStock) {
+                        const change = ((stock.price - previousStock.find(prev => prev.name === stock.name).price) / previousStock.find(prev => prev.name === stock.name).price) * 100;
+                        const sign = change >= 0 ? '+' : '';
+                        currentElement.innerHTML += `Change: ${sign}${change.toFixed(2)}%<br>`;
+                    }
+                });
+                stockDisplay.appendChild(currentElement);
+            }, 6000);
+        }
+    </script>
+</head>
+<body onload="updateStocks()">
+    <h1>Stock Market Simulation</h1>
+    <div id="stockDisplay">
+        <!-- Previous and current stock prices will be displayed here -->
+    </div>
+</body>
+</html>
